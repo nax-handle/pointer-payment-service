@@ -1,7 +1,10 @@
 import * as yup from "yup";
 
 export const orderSchema = yup.object({
-  amount: yup.string().required("Amount is required"),
+  amount: yup
+    .number()
+    .required("Amount is required")
+    .min(0, "Amount must be > 0"),
   currency: yup
     .string()
     .required("Currency is required")

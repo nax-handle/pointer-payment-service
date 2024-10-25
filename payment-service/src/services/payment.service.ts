@@ -9,10 +9,17 @@ export default class PaymentService {
     return process.env.PAYMENT_HOST + "/payment-gateway?token=" + id;
   }
   static async getOrder(transactionID: string) {
-    const order = await Redis.get(transactionID);
-    if (!order) {
+    const getOrder = await Redis.get(transactionID);
+    if (!getOrder) {
       throw new NotFound();
     }
-    return order;
+    return getOrder;
+  }
+  static async cancelOrder(transactionID: string) {
+    const delOrder = await Redis.del(transactionID);
+    if (delOrder !== 1) {
+      throw new NotFound();
+    }
+    return delOrder;
   }
 }

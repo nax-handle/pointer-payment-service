@@ -2,8 +2,9 @@ export interface createOrderDto {
   amount: number;
   currency: "VND" | "USD" | "ETH";
   message: string;
-  userID?: string;
+  userID: string;
   orderID: string;
+  returnUrl: string;
   orders?: {
     name: string;
     image: string;
@@ -11,5 +12,4 @@ export interface createOrderDto {
     quantity: string;
     price: string;
   }[];
-  returnUrl: string;
 }

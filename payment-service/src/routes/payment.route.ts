@@ -7,9 +7,15 @@ import { PaymentController } from "../controller/payment.controller";
 import catchError from "../helpers/catch.error";
 router.post(
   "/create-order",
-    authenticationPartner,
+  authenticationPartner,
   validate(orderSchema),
   catchError(PaymentController.createOrder)
 );
 router.get("/get-order", catchError(PaymentController.getOrder));
+router.post(
+  "/cancel-order",
+  authenticationPartner,
+  catchError(PaymentController.cancelOrder)
+);
+
 export default router;

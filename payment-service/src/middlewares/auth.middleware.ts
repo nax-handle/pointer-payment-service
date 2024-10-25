@@ -9,13 +9,14 @@ interface AuthRequest extends Request {
 }
 export const authenticationPartner = catchError(
   async (req: AuthRequest, res: Response, next: NextFunction) => {
-    const AuthHeader = req.headers.authorization;
-    const token = AuthHeader.split(" ")[1];
-    console.log(AuthHeader);
+    const token = req.headers.authorization?.split(" ")[1] || null;
     if (!token) {
       throw new UnAuthorized();
     }
     const data = await Partner.findOne({ privateKey: token });
+    if (!data) {
+      throw new UnAuthorized();
+    }
     console.log(data);
     if (!data?.webhook) {
       throw new PaymentRequired(

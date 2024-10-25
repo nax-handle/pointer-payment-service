@@ -9,7 +9,10 @@ export class PaymentController {
     const data = await PaymentService.getOrder(req.body.transactionID);
     res.json(data);
   }
-  static cancelOrder() {}
+  static async cancelOrder(req: Request, res: Response) {
+    await PaymentService.cancelOrder(req.body.transactionID);
+    res.json({ message: "Cancel order successfully!" });
+  }
   static refundMoney() {}
 
   static connectWallet() {}
