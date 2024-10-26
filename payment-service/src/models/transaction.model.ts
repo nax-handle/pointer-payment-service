@@ -38,6 +38,9 @@ const transactionSchema = new Schema(
     userID: {
       type: String,
     },
+    orderID: {
+      type: String,
+    },
     returnUrl: String,
   },
   {

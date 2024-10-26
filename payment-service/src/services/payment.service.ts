@@ -34,11 +34,14 @@ export default class PaymentService {
   }
   static async getOrder(transactionID: string) {
     const orders = await Redis.get(transactionID);
+    console.log(orders);
+    console.log(!orders);
     const transaction = await Transaction.findById(transactionID)
       .populate({ path: "partnerID", select: "name image description" })
+      .populate({ path: "currency" })
       .lean()
       .exec();
-    if (!transaction) {
+    if (!transaction || transaction.status === "completed" || !orders) {
       throw new NotFound("Transaction not found!");
     }
     return { ...transaction, orders: orders };
