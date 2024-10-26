@@ -6,7 +6,7 @@ export default class PaymentService {
   static async createOrder(createOrderDto: createOrderDto): Promise<string> {
     const id = uuidv4();
     await Redis.set(id, createOrderDto, 600);
-    return process.env.PAYMENT_HOST + "/payment-gateway?token=" + id;
+    return process.env.PAYMENT_HOST + "payment-gateway?token=" + id;
   }
   static async getOrder(transactionID: string) {
     const getOrder = await Redis.get(transactionID);

@@ -9,7 +9,7 @@ export interface createOrderDto {
     name: string;
     image: string;
     description: string;
-    quantity: string;
-    price: string;
+    quantity: number;
+    price: number;
   }[];
 }
