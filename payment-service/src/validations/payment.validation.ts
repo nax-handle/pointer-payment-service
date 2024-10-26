@@ -18,10 +18,7 @@ export const orderSchema = yup.object({
     .of(
       yup.object().shape({
         name: yup.string().required("Name is required"),
-        image: yup
-          .string()
-          .url("Invalid image URL")
-          .required("Image is required"),
+        image: yup.string().required("Image is required"),
         description: yup.string().required("Description is required"),
         quantity: yup
           .string()
