@@ -1,10 +1,8 @@
-import { Payment } from './types';
-declare class Pointer {
+import { createOrderDto, resCancelOrderDto, resCreateOrderDto } from "./types";
+export declare class Pointer {
     private apiKey;
-    private req;
+    private instance;
     constructor(apiKey: string);
-    createPayment: (body: Payment) => Promise<void>;
-    createRefund: () => Promise<void>;
+    createPayment: (body: createOrderDto) => Promise<resCreateOrderDto>;
+    cancelOrder: (transactionID: string) => Promise<resCancelOrderDto>;
 }
-export declare function pointer(apiKey: string): Pointer;
-export {};

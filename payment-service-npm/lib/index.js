@@ -9,33 +9,36 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.pointer = pointer;
+exports.Pointer = void 0;
 const axios_1 = require("axios");
 class Pointer {
     constructor(apiKey) {
         this.createPayment = (body) => __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log(body);
-                const response = yield this.req.get('/api/v1/user/get-users?page=1&page_limit=1');
-                console.log(JSON.stringify(response.data));
+                const response = yield this.instance.post("/api/payment/create-order", body);
+                return response.data;
             }
             catch (error) {
-                console.error('Error creating payment:', error);
+                throw new Error(error.message);
             }
         });
-        this.createRefund = () => __awaiter(this, void 0, void 0, function* () {
+        this.cancelOrder = (transactionID) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const response = yield this.instance.post("/api/payment/cancel-order", transactionID);
+                return response.data;
+            }
+            catch (error) {
+                throw new Error(error.message);
+            }
         });
-        console.log(apiKey);
         this.apiKey = apiKey;
-        this.req = axios_1.default.create({
-            baseURL: 'https://api-presspay.azurewebsites.net',
+        this.instance = axios_1.default.create({
+            baseURL: "https://api.pointer.io.vn",
             timeout: 10000,
             headers: {
-                'x-api-key': this.apiKey
-            }
+                Authorization: this.apiKey,
+            },
         });
     }
 }
-function pointer(apiKey) {
-    return new Pointer(apiKey);
-}
+exports.Pointer = Pointer;

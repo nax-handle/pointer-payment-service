@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from "axios";
-import { createOrderDto, resCancelOrderDto } from "./types";
+import { createOrderDto, resCancelOrderDto, resCreateOrderDto } from "./types";
 
 export class Pointer {
   private apiKey: string;
@@ -7,14 +7,14 @@ export class Pointer {
   constructor(apiKey: string) {
     this.apiKey = apiKey;
     this.instance = axios.create({
-      baseURL: "https://api-presspay.azurewebsites.net",
+      baseURL: "https://api.pointer.io.vn",
       timeout: 10000,
       headers: {
         Authorization: this.apiKey,
       },
     });
   }
-  createPayment = async (body: createOrderDto): Promise<createOrderDto> => {
+  createPayment = async (body: createOrderDto): Promise<resCreateOrderDto> => {
     try {
       const response = await this.instance.post(
         "/api/payment/create-order",
@@ -37,4 +37,3 @@ export class Pointer {
     }
   };
 }
-
