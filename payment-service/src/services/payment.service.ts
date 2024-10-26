@@ -23,7 +23,7 @@ export default class PaymentService {
     });
     await Redis.set(
       createdTransaction._id.toString(),
-      { ...createOrderDto.orders },
+      JSON.stringify(createOrderDto.orders),
       600
     );
     return (
@@ -33,9 +33,7 @@ export default class PaymentService {
     );
   }
   static async getOrder(transactionID: string) {
-    const orders = await Redis.get(transactionID);
-    console.log(orders);
-    console.log(!orders);
+    const orders: any = await Redis.get(transactionID);
     const transaction = await Transaction.findById(transactionID)
       .populate({ path: "partnerID", select: "name image description" })
       .populate({ path: "currency" })
@@ -44,7 +42,7 @@ export default class PaymentService {
     if (!transaction || transaction.status === "completed" || !orders) {
       throw new NotFound("Transaction not found!");
     }
-    return { ...transaction, orders: orders };
+    return { ...transaction, orders: JSON.parse(orders) };
   }
   static async cancelOrder(transactionID: string) {
     const delOrder = await Redis.del(transactionID);
