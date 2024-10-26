@@ -14,24 +14,27 @@ const axios_1 = require("axios");
 class Pointer {
     constructor(secretKey) {
         this.createPayment = (body) => __awaiter(this, void 0, void 0, function* () {
+            var _a;
             try {
                 const response = yield this.instance.post("/api/payment/create-order", body);
                 return response.data;
             }
             catch (error) {
-                if (error.response.status == 401) {
+                if (((_a = error === null || error === void 0 ? void 0 : error.response) === null || _a === void 0 ? void 0 : _a.status) == 401) {
                     throw new Error("Secret key invalid");
                 }
-                throw new Error(error.message);
+                throw new Error(error.response.data.message);
             }
         });
         this.cancelOrder = (transactionID) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const response = yield this.instance.post("/api/payment/cancel-order", transactionID);
+                const response = yield this.instance.post("/api/payment/cancel-order", {
+                    transactionID,
+                });
                 return response.data;
             }
             catch (error) {
-                throw new Error(error.message);
+                throw new Error(error.response.data.message);
             }
         });
         this.secretKey = secretKey;

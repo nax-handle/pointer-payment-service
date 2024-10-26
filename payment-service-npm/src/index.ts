@@ -21,21 +21,20 @@ export class Pointer {
       );
       return response.data;
     } catch (error: any) {
-      if (error.response.status == 401) {
+      if (error?.response?.status == 401) {
         throw new Error("Secret key invalid");
       }
-      throw new Error(error.message);
+      throw new Error(error.response.data.message);
     }
   };
   cancelOrder = async (transactionID: string): Promise<resCancelOrderDto> => {
     try {
-      const response = await this.instance.post(
-        "/api/payment/cancel-order",
-        transactionID
-      );
+      const response = await this.instance.post("/api/payment/cancel-order", {
+        transactionID,
+      });
       return response.data;
     } catch (error: any) {
-      throw new Error(error.message);
+      throw new Error(error.response.data.message);
     }
   };
 }
