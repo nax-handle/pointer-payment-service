@@ -1,16 +1,15 @@
 import axios, { AxiosInstance } from "axios";
 import { createOrderDto, resCancelOrderDto, resCreateOrderDto } from "./types";
-
 export class Pointer {
-  private apiKey: string;
+  private secretKey: string;
   private instance: AxiosInstance;
-  constructor(apiKey: string) {
-    this.apiKey = apiKey;
+  constructor(secretKey: string) {
+    this.secretKey = secretKey;
     this.instance = axios.create({
       baseURL: "https://api.pointer.io.vn",
       timeout: 10000,
       headers: {
-        Authorization: this.apiKey,
+        Authorization: `Bearer ${this.secretKey}`,
       },
     });
   }
@@ -22,6 +21,9 @@ export class Pointer {
       );
       return response.data;
     } catch (error: any) {
+      if (error.response.status == 401) {
+        throw new Error("Secret key invalid");
+      }
       throw new Error(error.message);
     }
   };

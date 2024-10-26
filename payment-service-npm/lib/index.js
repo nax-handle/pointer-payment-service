@@ -12,13 +12,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Pointer = void 0;
 const axios_1 = require("axios");
 class Pointer {
-    constructor(apiKey) {
+    constructor(secretKey) {
         this.createPayment = (body) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const response = yield this.instance.post("/api/payment/create-order", body);
                 return response.data;
             }
             catch (error) {
+                if (error.response.status == 401) {
+                    throw new Error("Secret key invalid");
+                }
                 throw new Error(error.message);
             }
         });
@@ -31,12 +34,12 @@ class Pointer {
                 throw new Error(error.message);
             }
         });
-        this.apiKey = apiKey;
+        this.secretKey = secretKey;
         this.instance = axios_1.default.create({
             baseURL: "https://api.pointer.io.vn",
             timeout: 10000,
             headers: {
-                Authorization: this.apiKey,
+                Authorization: `Bearer ${this.secretKey}`,
             },
         });
     }
