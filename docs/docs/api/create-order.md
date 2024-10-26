@@ -13,16 +13,23 @@ https://api-wallet.pointer.io.vn/
 # Create Order
 
 ```typescript title="Create Order"
-curl -X POST api/v1/order/create
+curl -X POST /api/payment/create-order
 -H 'Content-Type: application/json' \
 -H 'Authorization: Bearer ' + secret_key \
 -d {
-    "amount":"20000",
-    "currency":"VND",
-    "message":"Product's name",
-    "userID":"668fd2abaa7b610a6e7089ee",
-    "OrderID":"Order001"
-    "return_url":"your.domain.com/order?id={orderID}",
+  amount: number;
+  currency: "VND" | "USD" | "ETH";
+  message: string;
+  userID: string;
+  orderID: string;
+  returnUrl: string;
+  orders?: {
+    name: string;
+    image: string;
+    description: string;
+    quantity: number;
+    price: number;
+  }[];
 }
 ```
 
@@ -36,8 +43,8 @@ curl -X POST api/v1/order/create
 
 # HTTP Status
 
-| Status  | OK            | Description |
-| ------- | ------------- | ----------- |
-| **200** | OK            |             |
-| **401** | Unauthorized  |             |
-| **500** | Server Errors |             |
+| Status  | OK            | Description             |
+| ------- | ------------- | ----------------------- |
+| **200** | OK            | Order have been created |
+| **401** | Unauthorized  | Secret key is invalid   |
+| **500** | Server Errors | Something went wrong!   |
