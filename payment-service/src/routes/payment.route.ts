@@ -11,7 +11,7 @@ router.post(
   validate(orderSchema),
   catchError(PaymentController.createOrder)
 );
-router.get("/get-order", catchError(PaymentController.getOrder));
+router.get("/get-order/:id", catchError(PaymentController.getOrder));
 router.post(
   "/cancel-order",
   authenticationPartner,

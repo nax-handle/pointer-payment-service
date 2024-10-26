@@ -30,16 +30,6 @@ const transactionSchema = new Schema(
       ref: "Currency",
       required: true,
     },
-    sender: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-    },
-    receiver: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: false,
-      index: true,
-    },
     partnerID: {
       type: Schema.Types.ObjectId,
       ref: "Partner",
@@ -48,6 +38,7 @@ const transactionSchema = new Schema(
     userID: {
       type: String,
     },
+    returnUrl: String,
   },
   {
     timestamps: true,
