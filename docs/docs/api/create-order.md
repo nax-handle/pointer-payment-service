@@ -23,13 +23,13 @@ curl -X POST /api/payment/create-order
   userID: string;
   orderID: string;
   returnUrl: string;
-  orders?: {
+  orders?: [{
     name: string;
     image: string;
     description: string;
     quantity: number;
     price: number;
-  }[];
+  }];
 }
 ```
 

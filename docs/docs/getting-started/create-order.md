@@ -14,27 +14,44 @@ One **order** can have multiple products
 
 ## Create your order
 
-```typescript title="typescript"
-const response = await pointer.createPayment({
-  amount: 5000,
+```typescript title="Create Order"
+const { url } = await pointerPayment.createPayment({
+  amount: 500000,
+  currency: "VND",
+  message: "Payment with Pointer",
+  userID: "uuid-123",
+  orderID: "uuid-123",
+  returnUrl: "string",
+  orders: [
+    {
+      name: "Apple",
+      image: "https://www.youtube.com/watch?v=TD7sBUigDIU",
+      description: "Apple apple",
+      quantity: 10,
+      price: 25000,
+    },
+    {
+      name: "Coconut",
+      image: "https://www.youtube.com/watch?v=TD7sBUigDIU",
+      description: "Coconut coconut, i need it",
+      quantity: 10,
+      price: 25000,
+    },
+  ],
 });
+console.log(url);
 ```
 
-## Response
-
-```typescript title="typescript"
-const response = await pointer.createPayment({
-  "amount":"20000",
-  "currency":"VND",
-  "message":"Product's name",
-  "userID":"{userID}",
-  "orderID":"{orderID}"
-  "returnUrl":"your.domain.com/order?id={orderID}",
-  "":""
-});
-```
 :::tip
 
 **3** Currencies available `VND`, `USD`, `ETH`.
 
 :::
+| Field | Type | Description |
+| ------- | ------------- | ----------------------- |
+| **amount** | OK | Order have been created |
+| **currency** | | Secret key is invalid |
+| **userID** | a | x |
+| **orderID** | a | x |
+| **partner** | a | x |
+| **returnUrl** | a | x |
