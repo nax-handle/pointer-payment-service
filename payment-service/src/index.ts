@@ -11,13 +11,7 @@ import cors from "cors";
 connectMongoDB();
 connectRedis();
 // app.use("/api", proxyMiddleware);
-app.use(
-  cors({
-    origin: "*",
-    allowedHeaders: ["Content-Type", "Authorization"],
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-  })
-);
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use("/api", router);
