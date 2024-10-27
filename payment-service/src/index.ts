@@ -16,7 +16,6 @@ app.use(
     origin: "*",
     allowedHeaders: ["Content-Type", "Authorization"],
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    credentials: true,
   })
 );
 app.use(bodyParser.urlencoded({ extended: false }));
