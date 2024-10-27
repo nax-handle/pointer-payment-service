@@ -13,8 +13,9 @@ connectRedis();
 // app.use("/api", proxyMiddleware);
 app.use(
   cors({
-    allowedHeaders: "*",
     origin: "*",
+    allowedHeaders: ["Content-Type", "Authorization"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   })
 );
 app.use(bodyParser.urlencoded({ extended: false }));
