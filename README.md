@@ -1,10 +1,12 @@
 # Pointer Payment Service Documentation
-## Overview
-   Pointer is a comprehensive payment service that allows you to integrate secure payment solutions into your applications.
 
+## Overview
+
+Pointer is a comprehensive payment service that allows you to integrate secure payment solutions into your applications.
 
 ## Documentation
-Docs: https://pointer.io.vn
+
+Docs: https://nguynthuhigh.github.io/pointer-payment-service/
 
 ## Pointer Wallet API Overview
 
@@ -54,5 +56,3 @@ class PointerServices {
 ```
 
 # Contact Us
-
-
