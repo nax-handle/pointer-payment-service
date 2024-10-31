@@ -1,10 +1,10 @@
 # Configure Webhook
 
-## What is webhooks?
+## What is a webhook?
 
 A webhook is a lightweight, event-driven communication that automatically sends data between applications via HTTP. Triggered by specific events, webhooks automate communication between application programming interfaces (APIs) and can be used to activate workflows.
 
-### Step 1: Go to the  **[developer portal](https://pointer.io.vn/webhook)**  or relevant configuration page for your service.
+### Step 1: Go to the **[developer portal](https://pointer.io.vn/webhook)** or relevant configuration page for your service.
 
 ### Step 2: Paste the webhook URL in the designated field.
 
