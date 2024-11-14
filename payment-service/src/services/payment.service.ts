@@ -46,7 +46,7 @@ export default class PaymentService {
       throw new NotFound("Transaction not found!");
     }
 
-    return { ...transaction, orders: orders };
+    return { ...transaction, orders: JSON.parse(orders) };
   }
   static async cancelOrder(transactionID: string) {
     const delOrder = await Redis.del(transactionID);
