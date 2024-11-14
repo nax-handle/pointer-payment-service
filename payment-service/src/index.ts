@@ -24,6 +24,6 @@ app.use(bodyParser.json());
 app.use("/api", router);
 app.use(errorHandler);
 
-app.listen(3000, () => {
-  console.log("ok");
+app.listen(process.env.PORT, () => {
+  console.log(process.env.PORT);
 });

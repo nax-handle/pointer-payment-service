@@ -15,7 +15,7 @@ export default class Redis {
   }
   static async get(key: string): Promise<Object> {
     const data = await newRedis.get(key);
-    return JSON.parse(data);
+    return data ? JSON.parse(data) : " ";
   }
   static async del(key: string) {
     return await newRedis.del(key);

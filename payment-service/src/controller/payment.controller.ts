@@ -11,7 +11,7 @@ export class PaymentController {
   }
   static async getOrder(req: Request, res: Response) {
     const data = await PaymentService.getOrder(req.params.id);
-    res.json(data);
+    res.status(200).json(data);
   }
   static async cancelOrder(req: Request, res: Response) {
     await PaymentService.cancelOrder(req.body.transactionID);
