@@ -13,11 +13,23 @@ export class PaymentController {
     const data = await PaymentService.getOrder(req.params.id);
     res.status(200).json(data);
   }
-  static async cancelOrder(req: Request, res: Response) {
+  static async cancelOrder(req: AuthRequest, res: Response) {
     await PaymentService.cancelOrder(req.body.transactionID);
-    res.json({ message: "Cancel order successfully!" });
+    res.status(200).json({
+      message: "The order has been canceled successfully!",
+      status: 200,
+    });
   }
-  static refundMoney() {}
+  static async refundMoney(req: AuthRequest, res: Response) {
+    await PaymentService.refundMoney({
+      partnerID: req.partner._id,
+      orderID: req.body.orderID,
+    });
+    res.status(200).json({
+      message: "The order has been refunded successfully!",
+      status: 200,
+    });
+  }
 
   static connectWallet() {}
   static withdrawal() {}
