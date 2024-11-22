@@ -31,6 +31,6 @@ export class PaymentController {
     });
   }
 
-  static connectWallet() {}
+  static connectWallet(req: AuthRequest, res: Response) {}
   static withdrawal() {}
 }

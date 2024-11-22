@@ -45,10 +45,10 @@ export default class TransactionService {
   static async findTransactionRefund(
     findTransactionDto: findTransactionDto
   ): Promise<ITransaction> {
-    const { userID, partnerID } = findTransactionDto;
+    const { orderID, partnerID } = findTransactionDto;
     const transactions = await Transaction.findOne({
-      userID,
-      partnerID: convertToObjectId(partnerID),
+      orderID,
+      partnerID: partnerID,
     });
     if (!transactions) {
       throw new BadRequest("Transaction not found!");

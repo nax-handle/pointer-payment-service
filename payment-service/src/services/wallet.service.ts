@@ -42,4 +42,7 @@ export class WalletService {
       throw new BadRequest("Insufficient Balance");
     }
   }
+  static async connectWallet(partnerId: string) {
+    
+  }
 }
