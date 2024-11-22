@@ -1,3 +1,5 @@
+import { Types } from "mongoose";
+
 export function cleanData(data: any, dto: any) {
   const dtoKeys = Object.keys(new dto());
   const cleanedData: any = {};
@@ -9,4 +11,8 @@ export function cleanData(data: any, dto: any) {
   });
 
   return cleanedData;
+}
+
+export function convertToObjectId(id: string) {
+  return new Types.ObjectId(id);
 }

@@ -1,9 +1,10 @@
 import { CreateOrderDto } from "../dtos/payment.dto";
-import { NotFound } from "../helpers/error.helper";
+import { BadRequest, NotFound } from "../helpers/error.helper";
 import Redis from "../helpers/redis.helper";
-import { v4 as uuidv4 } from "uuid";
 import Transaction from "../models/transaction.model";
 import { Currency } from "../models/currency.model";
+import { TRANSACTION_STATUS } from "../contains/transaction-status";
+import TransactionService from "./transaction.service";
 export default class PaymentService {
   static async createOrder(createOrderDto: CreateOrderDto): Promise<string> {
     const { partner, currency } = createOrderDto;
@@ -45,14 +46,16 @@ export default class PaymentService {
     if (!transaction || transaction.status === "completed" || !orders) {
       throw new NotFound("Transaction not found!");
     }
-
     return { ...transaction, orders: JSON.parse(orders) };
   }
-  static async cancelOrder(transactionID: string) {
+  static async cancelOrder(transactionID: string): Promise<void> {
     const delOrder = await Redis.del(transactionID);
     if (delOrder !== 1) {
-      throw new NotFound();
+      throw new BadRequest("The Transaction has expired");
     }
-    return delOrder;
+    await TransactionService.updateStatus(
+      transactionID,
+      TRANSACTION_STATUS.FAIL
+    );
   }
 }
