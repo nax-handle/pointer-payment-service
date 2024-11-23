@@ -65,5 +65,5 @@ const walletSchema = new Schema(
   }
 );
 
-export const Currency = model("Currency", currencySchema);
+// export const Currency = model("Currency", currencySchema);
 export const Wallet = model("Wallet", walletSchema);

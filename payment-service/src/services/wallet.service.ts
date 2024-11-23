@@ -12,7 +12,6 @@ export class WalletService {
   ): Promise<void> {
     const { _id, amount, currencyID, session } = updateBalanceDto;
     const cacheKey = isPartner ? `partner:${_id}` : `user:${_id}`;
-    console.log(cacheKey);
     await Redis.del(cacheKey);
     const updateCondition = isPartner
       ? { partnerID: _id, "currencies.currency": currencyID }
@@ -23,7 +22,7 @@ export class WalletService {
       { session }
     );
     if (result.modifiedCount === 0) {
-      session.abortTransaction();
+      await session.abortTransaction();
       throw new BadRequest("Error system, try again");
     }
   }
@@ -42,7 +41,5 @@ export class WalletService {
       throw new BadRequest("Insufficient Balance");
     }
   }
-  static async connectWallet(partnerId: string) {
-    
-  }
+  static async connectWallet(partnerId: string) {}
 }

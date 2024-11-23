@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 export interface ITransaction {
   _id: Schema.Types.ObjectId;
   type: string;
@@ -17,6 +17,11 @@ export interface ITransaction {
 }
 const transactionSchema = new Schema<ITransaction>(
   {
+    _id: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      default: () => new mongoose.Types.ObjectId(),
+    },
     type: {
       type: String,
       required: true,

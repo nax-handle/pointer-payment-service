@@ -4,7 +4,6 @@ import Partner from "../models/partner.model";
 import catchError from "../helpers/catch.error";
 import { AuthRequest } from "../interfaces/request";
 
-
 export const authenticationPartner = catchError(
   async (req: AuthRequest, res: Response, next: NextFunction) => {
     const token = req.headers.authorization?.split(" ")[1] || null;
@@ -14,12 +13,6 @@ export const authenticationPartner = catchError(
     const data = await Partner.findOne({ privateKey: token });
     if (!data) {
       throw new UnAuthorized();
-    }
-    console.log(data);
-    if (!data?.webhook) {
-      throw new PaymentRequired(
-        "Webhooks must be configured before taking action"
-      );
     }
     if (data) {
       req.partner = data;

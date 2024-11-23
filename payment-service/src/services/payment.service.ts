@@ -9,6 +9,8 @@ import { findTransactionDto } from "../dtos/transaction/find-transaction.dto";
 import { WalletService } from "./wallet.service";
 import mongoose from "mongoose";
 import { TRANSACTION_TYPE } from "../contains/transaction-type";
+import WebhookService from "./webhook.service";
+import { WEBHOOK_EVENT } from "../contains/webhook-event";
 export default class PaymentService {
   static async createOrder(createOrderDto: CreateOrderDto): Promise<string> {
     const { partner, currency } = createOrderDto;
@@ -66,13 +68,16 @@ export default class PaymentService {
     findTransactionDto: findTransactionDto
   ): Promise<void> {
     const session = await mongoose.startSession();
+    session.startTransaction();
     const transaction = await TransactionService.findTransactionRefund(
       findTransactionDto
     );
-    if (transaction.isRefund === true) {
-      throw new BadRequest("The transaction has been refunded.");
+    if (
+      transaction.isRefund === true ||
+      transaction.status === TRANSACTION_STATUS.PENDING
+    ) {
+      throw new BadRequest("Transaction does not qualify.");
     }
-    await TransactionService.updateRefund(transaction._id, session);
     await WalletService.hasSufficientBalance(
       {
         _id: transaction.partnerID,
@@ -81,6 +86,7 @@ export default class PaymentService {
       },
       true
     );
+    await TransactionService.updateRefund(transaction._id, session);
     await WalletService.updateBalance(
       {
         _id: transaction.sender,
@@ -94,18 +100,23 @@ export default class PaymentService {
       {
         _id: transaction.partnerID,
         session: session,
-        amount: transaction.amount,
+        amount: -transaction.amount,
         currencyID: transaction.currency,
       },
       true
     );
     await TransactionService.createTransactionRefund({
-      ...transaction,
+      ...(transaction as any).toObject(),
       receiver: transaction.sender,
       type: TRANSACTION_TYPE.REFUND,
       session: session,
     });
-    //note: webhook
+    await WebhookService.requestToWebhook({
+      payload: { status: 200, orderID: transaction.orderID },
+      event: WEBHOOK_EVENT.PAYMENT_REFUND,
+      partnerId: transaction.partnerID,
+      session: session,
+    });
     session.commitTransaction();
   }
 }

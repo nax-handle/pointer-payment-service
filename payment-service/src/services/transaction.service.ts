@@ -1,4 +1,4 @@
-import { ClientSession, Schema } from "mongoose";
+import { ClientSession, Schema, Types } from "mongoose";
 import { createTransactionRefundDto } from "../dtos/transaction/create-transaction.dto";
 import { findTransactionDto } from "../dtos/transaction/find-transaction.dto";
 import { updateStatusDto } from "../dtos/transaction/update-status.dto";
@@ -29,7 +29,7 @@ export default class TransactionService {
       { session }
     );
     if (updatedTransaction.modifiedCount !== 1) {
-      session.abortTransaction();
+      await session.abortTransaction();
       throw new BadRequest("Transaction update failed, try again.");
     }
   }
@@ -37,10 +37,15 @@ export default class TransactionService {
     createTransactionRefundDto: createTransactionRefundDto
   ): Promise<void> {
     const { session } = createTransactionRefundDto;
-    const transaction = new Transaction(createTransactionRefundDto, {
+    const transaction = new Transaction({
+      ...createTransactionRefundDto,
+      _id: new Types.ObjectId(),
+      isRefund: true,
+      sender: null,
+    });
+    await transaction.save({
       session,
     });
-    await transaction.save();
   }
   static async findTransactionRefund(
     findTransactionDto: findTransactionDto

@@ -5,17 +5,16 @@ import { orderSchema } from "../validations/payment.validation";
 import { authenticationPartner } from "../middlewares/auth.middleware";
 import { PaymentController } from "../controller/payment.controller";
 import catchError from "../helpers/catch.error";
-router.post(
-  "/create-order",
-  authenticationPartner,
-  validate(orderSchema),
-  catchError(PaymentController.createOrder)
-);
+
 router.get("/get-order/:id", catchError(PaymentController.getOrder));
-router.post(
-  "/cancel-order",
-  authenticationPartner,
-  catchError(PaymentController.cancelOrder)
-);
+router.use(authenticationPartner);
+router
+  .post(
+    "/create-order",
+    validate(orderSchema),
+    catchError(PaymentController.createOrder)
+  )
+  .post("/cancel-order", catchError(PaymentController.cancelOrder))
+  .post("/refund", catchError(PaymentController.refundMoney));
 
 export default router;
