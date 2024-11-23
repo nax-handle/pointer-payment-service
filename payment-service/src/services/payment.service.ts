@@ -11,6 +11,10 @@ import mongoose from "mongoose";
 import { TRANSACTION_TYPE } from "../contains/transaction-type";
 import WebhookService from "./webhook.service";
 import { WEBHOOK_EVENT } from "../contains/webhook-event";
+import { connectedPaymentDto } from "../dtos/transaction/connected-payment.dto";
+import { ConnectWallet, IConnectWallet } from "../models/connect-wallet.model";
+import CurrencyService from "./currency.sevice";
+import { verifySignature } from "../utils";
 export default class PaymentService {
   static async createOrder(createOrderDto: CreateOrderDto): Promise<string> {
     const { partner, currency } = createOrderDto;
@@ -117,6 +121,66 @@ export default class PaymentService {
       partnerId: transaction.partnerID,
       session: session,
     });
+    session.commitTransaction();
+  }
+  static async connectedPayment(connectedPaymentDto: connectedPaymentDto) {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    const { partner, signature, amount, currency, orderID } =
+      connectedPaymentDto;
+    const { _id: currencyID } = await CurrencyService.getCurrencyByName(
+      currency
+    );
+    const data: IConnectWallet = await ConnectWallet.findOne({
+      signature,
+    });
+    if (!data) {
+      throw new BadRequest("Signature invalid!");
+    }
+    const { userID } = data;
+    verifySignature(partner.privateKey, userID.toString(), signature);
+    await WalletService.hasSufficientBalance(
+      {
+        _id: userID,
+        amount: amount,
+        currencyID: currencyID,
+      },
+      false
+    );
+    await WalletService.updateBalance(
+      {
+        _id: userID,
+        session: session,
+        amount: -amount,
+        currencyID: currencyID,
+      },
+      false
+    );
+    await WalletService.updateBalance(
+      {
+        _id: partner._id,
+        session: session,
+        amount: amount,
+        currencyID: currencyID,
+      },
+      true
+    );
+    await WebhookService.requestToWebhook({
+      payload: { status: 200, orderID: orderID },
+      event: WEBHOOK_EVENT.PAYMENT_SUCCEEDED,
+      partnerId: partner._id,
+      session: session,
+    });
+
+    const transaction = new Transaction({
+      ...connectedPaymentDto,
+      currency: currencyID,
+      type: "payment",
+      title: "Thanh toán hóa đơn " + partner.name,
+      status: TRANSACTION_STATUS.COMPLETED,
+      partnerID: partner._id,
+    });
+    await transaction.save({ session });
     session.commitTransaction();
   }
 }

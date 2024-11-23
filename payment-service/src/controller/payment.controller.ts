@@ -30,7 +30,15 @@ export class PaymentController {
       status: 200,
     });
   }
-
-  static connectWallet(req: AuthRequest, res: Response) {}
+  static async connectedPayment(req: AuthRequest, res: Response) {
+    await PaymentService.connectedPayment({
+      ...req.body,
+      partner: req.partner,
+    });
+    res.status(200).json({
+      message: "Successfully!",
+      status: 200,
+    });
+  }
   static withdrawal() {}
 }

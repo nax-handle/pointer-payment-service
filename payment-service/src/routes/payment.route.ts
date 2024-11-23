@@ -15,6 +15,10 @@ router
     catchError(PaymentController.createOrder)
   )
   .post("/cancel-order", catchError(PaymentController.cancelOrder))
-  .post("/refund", catchError(PaymentController.refundMoney));
+  .post("/refund", catchError(PaymentController.refundMoney))
+  .post(
+    "/connect-wallet/payment",
+    catchError(PaymentController.connectedPayment)
+  );
 
 export default router;

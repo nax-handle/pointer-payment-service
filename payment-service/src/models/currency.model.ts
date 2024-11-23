@@ -1,6 +1,11 @@
 import { model, Schema } from "mongoose";
-
-const currencySchema = new Schema(
+export interface ICurrency {
+  _id: Schema.Types.ObjectId;
+  symbol: string;
+  name: string;
+  image: string;
+}
+const currencySchema = new Schema<ICurrency>(
   {
     symbol: {
       type: String,
