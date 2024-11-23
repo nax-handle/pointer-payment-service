@@ -1,5 +1,6 @@
 import { hasSufficientDto } from "../dtos/wallet/has-sufficient.dto";
 import { updateBalanceDto } from "../dtos/wallet/update-balance.dto";
+import { updateBalanceWalletDto } from "../dtos/wallet/update-wallet.dto";
 import { BadRequest } from "../helpers/error.helper";
 import Redis from "../helpers/redis.helper";
 import { Wallet } from "../models/wallet.model";
@@ -41,5 +42,4 @@ export class WalletService {
       throw new BadRequest("Insufficient Balance");
     }
   }
-  static async connectWallet(partnerId: string) {}
 }

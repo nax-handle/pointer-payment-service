@@ -11,10 +11,12 @@ import mongoose from "mongoose";
 import { TRANSACTION_TYPE } from "../contains/transaction-type";
 import WebhookService from "./webhook.service";
 import { WEBHOOK_EVENT } from "../contains/webhook-event";
-import { connectedPaymentDto } from "../dtos/transaction/connected-payment.dto";
+import { connectedPaymentDto } from "../dtos/payment/connected-payment.dto";
 import { ConnectWallet, IConnectWallet } from "../models/connect-wallet.model";
-import CurrencyService from "./currency.sevice";
+import CurrencyService from "./currency.service";
 import { verifySignature } from "../utils";
+import { withdrawMoneyDto } from "../dtos/payment/withdraw-money.dto";
+import UserService from "./user.service";
 export default class PaymentService {
   static async createOrder(createOrderDto: CreateOrderDto): Promise<string> {
     const { partner, currency } = createOrderDto;
@@ -47,13 +49,17 @@ export default class PaymentService {
       .populate({ path: "currency" })
       .lean()
       .exec();
-    if (transaction.status === "completed" && orders) {
+    if (transaction.status === TRANSACTION_STATUS.COMPLETED && orders) {
       return {
         url: transaction.returnUrl,
         status: 202,
       };
     }
-    if (!transaction || transaction.status === "completed" || !orders) {
+    if (
+      !transaction ||
+      transaction.status !== TRANSACTION_STATUS.PENDING ||
+      !orders
+    ) {
       throw new NotFound("Transaction not found!");
     }
     return { ...transaction, orders: JSON.parse(orders) };
@@ -68,61 +74,7 @@ export default class PaymentService {
       status: TRANSACTION_STATUS.FAIL,
     });
   }
-  static async refundMoney(
-    findTransactionDto: findTransactionDto
-  ): Promise<void> {
-    const session = await mongoose.startSession();
-    session.startTransaction();
-    const transaction = await TransactionService.findTransactionRefund(
-      findTransactionDto
-    );
-    if (
-      transaction.isRefund === true ||
-      transaction.status === TRANSACTION_STATUS.PENDING
-    ) {
-      throw new BadRequest("Transaction does not qualify.");
-    }
-    await WalletService.hasSufficientBalance(
-      {
-        _id: transaction.partnerID,
-        amount: transaction.amount,
-        currencyID: transaction.currency,
-      },
-      true
-    );
-    await TransactionService.updateRefund(transaction._id, session);
-    await WalletService.updateBalance(
-      {
-        _id: transaction.sender,
-        session: session,
-        amount: transaction.amount,
-        currencyID: transaction.currency,
-      },
-      false
-    );
-    await WalletService.updateBalance(
-      {
-        _id: transaction.partnerID,
-        session: session,
-        amount: -transaction.amount,
-        currencyID: transaction.currency,
-      },
-      true
-    );
-    await TransactionService.createTransactionRefund({
-      ...(transaction as any).toObject(),
-      receiver: transaction.sender,
-      type: TRANSACTION_TYPE.REFUND,
-      session: session,
-    });
-    await WebhookService.requestToWebhook({
-      payload: { status: 200, orderID: transaction.orderID },
-      event: WEBHOOK_EVENT.PAYMENT_REFUND,
-      partnerId: transaction.partnerID,
-      session: session,
-    });
-    session.commitTransaction();
-  }
+  
   static async connectedPayment(connectedPaymentDto: connectedPaymentDto) {
     const session = await mongoose.startSession();
     session.startTransaction();
@@ -183,4 +135,5 @@ export default class PaymentService {
     await transaction.save({ session });
     session.commitTransaction();
   }
+  
 }

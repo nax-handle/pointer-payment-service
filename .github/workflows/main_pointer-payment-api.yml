@@ -7,6 +7,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "payment-service/**"
   workflow_dispatch:
 
 jobs:
@@ -19,7 +21,7 @@ jobs:
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
-          node-version: '18.x'
+          node-version: "18.x"
 
       - name: npm install, build, and test
         run: |
@@ -40,9 +42,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: 'Production'
+      name: "Production"
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    
+
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
@@ -51,12 +53,12 @@ jobs:
 
       - name: Unzip artifact for deployment
         run: unzip release.zip
-      
-      - name: 'Deploy to Azure Web App'
+
+      - name: "Deploy to Azure Web App"
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'pointer-payment-api'
-          slot-name: 'Production'
+          app-name: "pointer-payment-api"
+          slot-name: "Production"
           package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6943B915C38546C7BD402D250D49E98B }}

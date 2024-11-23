@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import PaymentService from "../services/payment.service";
 import { AuthRequest } from "../interfaces/request";
+import RefundService from "../services/refund.service";
 export class PaymentController {
   static async createOrder(req: AuthRequest, res: Response) {
     const url = await PaymentService.createOrder({
@@ -21,7 +22,7 @@ export class PaymentController {
     });
   }
   static async refundMoney(req: AuthRequest, res: Response) {
-    await PaymentService.refundMoney({
+    await RefundService.refundMoney({
       partnerID: req.partner._id,
       orderID: req.body.orderID,
     });
@@ -40,5 +41,14 @@ export class PaymentController {
       status: 200,
     });
   }
-  static withdrawal() {}
+  static async withdrawalMoney(req: AuthRequest, res: Response) {
+    await PaymentService.withdrawMoney({
+      ...req.body,
+      partner: req.partner,
+    });
+    res.status(200).json({
+      message: "Withdraw money successfully!",
+      status: 200,
+    });
+  }
 }
