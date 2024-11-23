@@ -1,22 +1,18 @@
-import { CreateOrderDto } from "../dtos/payment.dto";
+import { CreateOrderDto } from "../dtos/payment/payment.dto";
 import { BadRequest, NotFound } from "../helpers/error.helper";
 import Redis from "../helpers/redis.helper";
 import Transaction from "../models/transaction.model";
 import { Currency } from "../models/currency.model";
 import { TRANSACTION_STATUS } from "../contains/transaction-status";
 import TransactionService from "./transaction.service";
-import { findTransactionDto } from "../dtos/transaction/find-transaction.dto";
 import { WalletService } from "./wallet.service";
 import mongoose from "mongoose";
-import { TRANSACTION_TYPE } from "../contains/transaction-type";
 import WebhookService from "./webhook.service";
 import { WEBHOOK_EVENT } from "../contains/webhook-event";
 import { connectedPaymentDto } from "../dtos/payment/connected-payment.dto";
 import { ConnectWallet, IConnectWallet } from "../models/connect-wallet.model";
 import CurrencyService from "./currency.service";
 import { verifySignature } from "../utils";
-import { withdrawMoneyDto } from "../dtos/payment/withdraw-money.dto";
-import UserService from "./user.service";
 export default class PaymentService {
   static async createOrder(createOrderDto: CreateOrderDto): Promise<string> {
     const { partner, currency } = createOrderDto;
@@ -74,7 +70,7 @@ export default class PaymentService {
       status: TRANSACTION_STATUS.FAIL,
     });
   }
-  
+
   static async connectedPayment(connectedPaymentDto: connectedPaymentDto) {
     const session = await mongoose.startSession();
     session.startTransaction();
@@ -135,5 +131,4 @@ export default class PaymentService {
     await transaction.save({ session });
     session.commitTransaction();
   }
-  
 }

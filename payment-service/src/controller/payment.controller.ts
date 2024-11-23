@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import PaymentService from "../services/payment.service";
 import { AuthRequest } from "../interfaces/request";
 import RefundService from "../services/refund.service";
+import WithdrawService from "../services/withdraw.service";
 export class PaymentController {
   static async createOrder(req: AuthRequest, res: Response) {
     const url = await PaymentService.createOrder({
@@ -42,7 +43,7 @@ export class PaymentController {
     });
   }
   static async withdrawalMoney(req: AuthRequest, res: Response) {
-    await PaymentService.withdrawMoney({
+    await WithdrawService.withdrawMoney({
       ...req.body,
       partner: req.partner,
     });

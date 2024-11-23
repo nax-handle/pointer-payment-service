@@ -1,4 +1,4 @@
-import { IPartner } from "../interfaces/partner";
+import { IPartner } from "../../interfaces/partner";
 export interface CreateOrderDto {
   amount: number;
   currency: "VND" | "USD" | "ETH";
