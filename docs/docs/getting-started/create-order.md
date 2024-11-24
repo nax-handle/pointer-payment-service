@@ -22,6 +22,7 @@ const { url } = await pointerPayment.createPayment({
   userID: "uuid-123",
   orderID: "uuid-123",
   returnUrl: "string",
+  providerID: "provider_id", // Optional
   orders: [
     {
       name: "Apple",
