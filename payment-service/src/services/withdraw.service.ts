@@ -9,7 +9,8 @@ import UserService from "./user.service";
 export default class WithdrawService {
   static async withdrawMoney(withdrawMoneyDto: withdrawMoneyDto) {
     const { email, currency, amount, partner } = withdrawMoneyDto;
-    const user = await UserService.findUserByEmail(email);
+    const { _id: userID } = await UserService.findUserByEmail(email);
+    console.log(userID);
     const foundCurrency = await CurrencyService.getCurrencyByName(currency);
     const { _id: currencyID } = foundCurrency;
     const session = await mongoose.startSession();
@@ -30,17 +31,26 @@ export default class WithdrawService {
     );
     await WalletService.updateBalance(
       {
-        _id: user._id,
+        _id: userID,
         session,
         amount,
         currencyID,
       },
-      true
+      false
     );
-    const transaction = new Transaction({
+    console.log({
       ...withdrawMoneyDto,
       currency: currencyID,
       type: TRANSACTION_TYPE.WITHDRAW,
+      title: "Nhận tiền từ " + partner.name,
+      status: TRANSACTION_STATUS.COMPLETED,
+      partnerID: partner._id,
+    });
+    const transaction = new Transaction({
+      ...withdrawMoneyDto,
+      receiver: userID,
+      currency: currencyID,
+      type: TRANSACTION_TYPE.TRANSFER,
       title: "Nhận tiền từ " + partner.name,
       status: TRANSACTION_STATUS.COMPLETED,
       partnerID: partner._id,

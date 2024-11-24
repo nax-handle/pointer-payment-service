@@ -42,7 +42,7 @@ export class PaymentController {
       status: 200,
     });
   }
-  static async withdrawalMoney(req: AuthRequest, res: Response) {
+  static async withdrawMoney(req: AuthRequest, res: Response) {
     await WithdrawService.withdrawMoney({
       ...req.body,
       partner: req.partner,

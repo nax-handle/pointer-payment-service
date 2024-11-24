@@ -29,3 +29,14 @@ export const orderSchema = yup.object({
     )
     .optional(),
 });
+export const withdrawSchema = yup.object({
+  amount: yup
+    .number()
+    .required("Amount is required")
+    .min(0, "Amount must be > 0"),
+  currency: yup
+    .string()
+    .required("Currency is required")
+    .equals(["VND", "USD", "ETH"]),
+  email: yup.string().required("Email is required"),
+});
