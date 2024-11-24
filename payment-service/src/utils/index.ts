@@ -31,3 +31,17 @@ export function verifySignature(
   }
   return;
 }
+
+//{ a: undefined | all, b: 'a'} => { b: 'a'}
+export function cleanObject(obj: Record<string, any>) {
+  const cleanedObj = Object.entries(obj).reduce<Record<string, any>>(
+    (acc, [key, value]) => {
+      if (value !== undefined && value !== "all") {
+        acc[key] = value;
+      }
+      return acc;
+    },
+    {}
+  );
+  return cleanedObj;
+}

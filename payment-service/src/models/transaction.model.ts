@@ -11,6 +11,7 @@ export interface ITransaction {
   receiver: Schema.Types.ObjectId;
   partnerID?: Schema.Types.ObjectId;
   userID?: string;
+  providerID?: string;
   orderID?: string;
   returnUrl?: string;
   isRefund: boolean;
@@ -64,6 +65,9 @@ const transactionSchema = new Schema<ITransaction>(
       required: false,
     },
     userID: {
+      type: String,
+    },
+    providerID: {
       type: String,
     },
     orderID: {
