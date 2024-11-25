@@ -2,11 +2,15 @@
 sidebar_position: 6
 ---
 
-# Connected Payment
+# Pay with one click
 
-## Withdraw Money API
+## Pay with one click
 
-The `connectedPayment` method allows you to process withdrawals through the Pointer Payment system.
+:::tip
+Required: Webhook event succeeded
+You must configure
+Connect Wallet: https://pointer.io.vn/connect-app?partnerId=${partnerId}&returnUrl={returnUrl}&userId={userId}
+:::
 
 ### Syntax
 
@@ -38,6 +42,3 @@ await pointerPayment.connectedPayment({
 | **orderID** | string | |
 | **providerID** | string | |
 | **returnUrl** | string | |
-
-
-

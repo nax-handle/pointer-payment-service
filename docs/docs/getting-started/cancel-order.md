@@ -15,6 +15,6 @@ After configure
 ## Cancel your order
 
 ```typescript title="Cancel Order"
-const data = await pointerPayment.cancelOrder(transactionID);
+const data = await pointerPayment.cancelOrder(orderID);
 console.log(data);
 ```

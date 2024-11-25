@@ -5,9 +5,7 @@ sidebar_position: 5
 # Refund
 
 ```typescript title="Withdraw Money"
-await pointerPayment.refundMoney({
-  orderID: "6729810d8ef12a3b64142cd7",
-});
+await pointerPayment.refundMoney(orderID);
 ```
 
 | Field       | Type   | Description |

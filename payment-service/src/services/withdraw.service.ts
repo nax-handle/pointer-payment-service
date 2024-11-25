@@ -8,7 +8,6 @@ import { withdrawMoneyDto } from "../dtos/payment/withdraw-money.dto";
 import UserService from "./user.service";
 export default class WithdrawService {
   static async withdrawMoney(withdrawMoneyDto: withdrawMoneyDto) {
-    console.log(withdrawMoneyDto);
     const { email, currency, amount, partner } = withdrawMoneyDto;
     const { _id: userID } = await UserService.findUserByEmail(email);
     const foundCurrency = await CurrencyService.getCurrencyByName(currency);
@@ -38,14 +37,6 @@ export default class WithdrawService {
       },
       false
     );
-    console.log({
-      ...withdrawMoneyDto,
-      currency: currencyID,
-      type: TRANSACTION_TYPE.WITHDRAW,
-      title: "Nhận tiền từ " + partner.name,
-      status: TRANSACTION_STATUS.COMPLETED,
-      partnerID: partner._id,
-    });
     const transaction = new Transaction({
       ...withdrawMoneyDto,
       receiver: userID,
