@@ -4,13 +4,12 @@ import { findTransactionDto } from "../dtos/transaction/find-transaction.dto";
 import { updateStatusDto } from "../dtos/transaction/update-status.dto";
 import { BadRequest } from "../helpers/error.helper";
 import Transaction, { ITransaction } from "../models/transaction.model";
-import { convertToObjectId } from "../utils";
 
 export default class TransactionService {
   static async updateStatus(updateStatusDto: updateStatusDto): Promise<void> {
     const { _id, status } = updateStatusDto;
     const updatedTransaction = await Transaction.updateOne(
-      { _id: convertToObjectId(_id) },
+      { _id: _id },
       {
         status: status,
       }
@@ -47,7 +46,7 @@ export default class TransactionService {
       session,
     });
   }
-  static async findTransactionRefund(
+  static async findTransactionByOrder(
     findTransactionDto: findTransactionDto
   ): Promise<ITransaction> {
     const { orderID, partnerID } = findTransactionDto;

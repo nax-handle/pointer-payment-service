@@ -43,6 +43,8 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+      USE_SSH: true
+      GIT_USER: nguynthuhigh
 
     runs-on: ubuntu-latest
     steps:

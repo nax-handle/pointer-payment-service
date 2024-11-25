@@ -13,6 +13,7 @@ import { connectedPaymentDto } from "../dtos/payment/connected-payment.dto";
 import { ConnectWallet, IConnectWallet } from "../models/connect-wallet.model";
 import CurrencyService from "./currency.service";
 import { verifySignature } from "../utils";
+import { findTransactionDto } from "../dtos/transaction/find-transaction.dto";
 export default class PaymentService {
   static async createOrder(createOrderDto: CreateOrderDto): Promise<string> {
     const { partner, currency } = createOrderDto;
@@ -60,8 +61,14 @@ export default class PaymentService {
     }
     return { ...transaction, orders: JSON.parse(orders) };
   }
-  static async cancelOrder(transactionID: string): Promise<void> {
-    const delOrder = await Redis.del(transactionID);
+  static async cancelOrder(
+    findTransactionDto: findTransactionDto
+  ): Promise<void> {
+    const transaction = await TransactionService.findTransactionByOrder(
+      findTransactionDto
+    );
+    const { _id: transactionID } = transaction;
+    const delOrder = await Redis.del(transactionID.toString());
     if (delOrder !== 1) {
       throw new BadRequest("The Transaction has expired");
     }

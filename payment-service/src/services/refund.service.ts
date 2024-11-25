@@ -14,12 +14,12 @@ export default class RefundService {
   ): Promise<void> {
     const session = await mongoose.startSession();
     session.startTransaction();
-    const transaction = await TransactionService.findTransactionRefund(
+    const transaction = await TransactionService.findTransactionByOrder(
       findTransactionDto
     );
     if (
       transaction.isRefund === true ||
-      transaction.status === TRANSACTION_STATUS.PENDING
+      transaction.status !== TRANSACTION_STATUS.COMPLETED
     ) {
       throw new BadRequest("Transaction does not qualify.");
     }
