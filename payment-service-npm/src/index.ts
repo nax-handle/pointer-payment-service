@@ -31,10 +31,10 @@ export class Pointer {
       throw new Error(error.response.data.message);
     }
   };
-  cancelOrder = async (transactionID: string): Promise<resCancelOrderDto> => {
+  cancelOrder = async (orderID: string): Promise<resCancelOrderDto> => {
     try {
       const response = await this.instance.post("/cancel-order", {
-        transactionID,
+        orderID,
       });
       return response.data;
     } catch (error: any) {
@@ -47,22 +47,27 @@ export class Pointer {
         orderID,
       });
       return response.data;
-    } catch (error) {}
+    } catch (error: any) {
+      throw new Error(error.response.data.message);
+    }
   };
   withdrawMoney = async (body: withdrawMoneyDto) => {
     try {
-      const response = await this.instance.post("/withdraw", {
-        body,
-      });
+      const response = await this.instance.post("/withdraw", body);
       return response.data;
-    } catch (error) {}
+    } catch (error: any) {
+      throw new Error(error.response.data.message);
+    }
   };
   connectedPayment = async (body: connectedPaymentDto) => {
     try {
-      const response = await this.instance.post("/connect-wallet/payment", {
-        body,
-      });
+      const response = await this.instance.post(
+        "/connect-wallet/payment",
+        body
+      );
       return response.data;
-    } catch (error) {}
+    } catch (error: any) {
+      throw new Error(error.response.data.message);
+    }
   };
 }
