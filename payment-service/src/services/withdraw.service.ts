@@ -41,7 +41,7 @@ export default class WithdrawService {
       ...withdrawMoneyDto,
       receiver: userID,
       currency: currencyID,
-      type: TRANSACTION_TYPE.TRANSFER,
+      type: TRANSACTION_TYPE.WITHDRAW_PARTNER,
       title: "Nhận tiền từ " + partner.name,
       status: TRANSACTION_STATUS.COMPLETED,
       partnerID: partner._id,

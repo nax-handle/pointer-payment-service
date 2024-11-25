@@ -3,5 +3,6 @@ export const TRANSACTION_TYPE = {
   PAYMENT: "payment",
   DEPOSIT: "deposit",
   WITHDRAW: "withdraw",
+  WITHDRAW_PARTNER: "withdraw-partner",
   REFUND: "refund",
 };
