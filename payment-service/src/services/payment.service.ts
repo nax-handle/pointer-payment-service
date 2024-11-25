@@ -67,6 +67,7 @@ export default class PaymentService {
     const transaction = await TransactionService.findTransactionByOrder(
       findTransactionDto
     );
+    console.log(findTransactionDto);
     const { _id: transactionID } = transaction;
     const delOrder = await Redis.del(transactionID.toString());
     if (delOrder !== 1) {

@@ -16,7 +16,10 @@ export class PaymentController {
     res.status(200).json(data);
   }
   static async cancelOrder(req: AuthRequest, res: Response) {
-    await PaymentService.cancelOrder(req.body.orderID);
+    await PaymentService.cancelOrder({
+      orderID: req.body.orderID,
+      partnerID: req.partner._id,
+    });
     res.status(200).json({
       message: "The order has been canceled successfully!",
       status: 200,

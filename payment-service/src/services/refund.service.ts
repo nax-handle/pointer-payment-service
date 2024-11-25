@@ -17,6 +17,7 @@ export default class RefundService {
     const transaction = await TransactionService.findTransactionByOrder(
       findTransactionDto
     );
+    console.log(transaction);
     if (
       transaction.isRefund === true ||
       transaction.status !== TRANSACTION_STATUS.COMPLETED

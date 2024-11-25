@@ -8,9 +8,9 @@ import { withdrawMoneyDto } from "../dtos/payment/withdraw-money.dto";
 import UserService from "./user.service";
 export default class WithdrawService {
   static async withdrawMoney(withdrawMoneyDto: withdrawMoneyDto) {
+    console.log(withdrawMoneyDto);
     const { email, currency, amount, partner } = withdrawMoneyDto;
     const { _id: userID } = await UserService.findUserByEmail(email);
-    console.log(userID);
     const foundCurrency = await CurrencyService.getCurrencyByName(currency);
     const { _id: currencyID } = foundCurrency;
     const session = await mongoose.startSession();
