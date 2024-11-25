@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { WEBHOOK_EVENT } from "../contains/webhook-event";
+import { WEBHOOK_EVENT } from "../constant/webhook-event";
 const webhookSchema = new Schema(
   {
     url: {

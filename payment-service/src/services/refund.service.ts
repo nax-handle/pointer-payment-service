@@ -1,12 +1,12 @@
 import { BadRequest } from "../helpers/error.helper";
-import { TRANSACTION_STATUS } from "../contains/transaction-status";
+import { TRANSACTION_STATUS } from "../constant/transaction-status";
 import TransactionService from "./transaction.service";
 import { findTransactionDto } from "../dtos/transaction/find-transaction.dto";
 import { WalletService } from "./wallet.service";
 import mongoose from "mongoose";
-import { TRANSACTION_TYPE } from "../contains/transaction-type";
+import { TRANSACTION_TYPE } from "../constant/transaction-type";
 import WebhookService from "./webhook.service";
-import { WEBHOOK_EVENT } from "../contains/webhook-event";
+import { WEBHOOK_EVENT } from "../constant/webhook-event";
 
 export default class RefundService {
   static async refundMoney(

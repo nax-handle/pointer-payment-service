@@ -3,12 +3,12 @@ import { BadRequest, NotFound } from "../helpers/error.helper";
 import Redis from "../helpers/redis.helper";
 import Transaction from "../models/transaction.model";
 import { Currency } from "../models/currency.model";
-import { TRANSACTION_STATUS } from "../contains/transaction-status";
+import { TRANSACTION_STATUS } from "../constant/transaction-status";
 import TransactionService from "./transaction.service";
 import { WalletService } from "./wallet.service";
 import mongoose from "mongoose";
 import WebhookService from "./webhook.service";
-import { WEBHOOK_EVENT } from "../contains/webhook-event";
+import { WEBHOOK_EVENT } from "../constant/webhook-event";
 import { connectedPaymentDto } from "../dtos/payment/connected-payment.dto";
 import { ConnectWallet, IConnectWallet } from "../models/connect-wallet.model";
 import CurrencyService from "./currency.service";
@@ -135,6 +135,7 @@ export default class PaymentService {
       title: "Thanh toán hóa đơn " + partner.name,
       status: TRANSACTION_STATUS.COMPLETED,
       partnerID: partner._id,
+      sender: userID,
     });
     await transaction.save({ session });
     session.commitTransaction();

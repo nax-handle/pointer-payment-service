@@ -1,8 +1,8 @@
 import Transaction from "../models/transaction.model";
-import { TRANSACTION_STATUS } from "../contains/transaction-status";
+import { TRANSACTION_STATUS } from "../constant/transaction-status";
 import { WalletService } from "./wallet.service";
 import mongoose from "mongoose";
-import { TRANSACTION_TYPE } from "../contains/transaction-type";
+import { TRANSACTION_TYPE } from "../constant/transaction-type";
 import CurrencyService from "./currency.service";
 import { withdrawMoneyDto } from "../dtos/payment/withdraw-money.dto";
 import UserService from "./user.service";
