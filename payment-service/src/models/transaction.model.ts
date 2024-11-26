@@ -1,4 +1,5 @@
 import mongoose, { Schema, model } from "mongoose";
+import { TRANSACTION_TYPE } from "../constant/transaction-type";
 export interface ITransaction {
   _id: Schema.Types.ObjectId;
   type: string;
@@ -26,7 +27,7 @@ const transactionSchema = new Schema<ITransaction>(
     type: {
       type: String,
       required: true,
-      enum: ["transfer", "payment", "deposit", "withdraw", "refund"],
+      enum: Object.values(TRANSACTION_TYPE),
       index: true,
     },
     amount: {

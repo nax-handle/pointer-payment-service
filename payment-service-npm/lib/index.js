@@ -63,6 +63,7 @@ class Pointer {
                 return response.data;
             }
             catch (error) {
+                console.log(error.response);
                 throw new Error(error.response.data.message);
             }
         });

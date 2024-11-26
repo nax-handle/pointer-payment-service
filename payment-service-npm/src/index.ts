@@ -67,6 +67,7 @@ export class Pointer {
       );
       return response.data;
     } catch (error: any) {
+      console.log(error.response);
       throw new Error(error.response.data.message);
     }
   };
