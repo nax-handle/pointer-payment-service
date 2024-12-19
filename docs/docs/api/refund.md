@@ -1,15 +1,14 @@
 ---
-sidebar_position: 2
+sidebar_position: 4
 ---
 
-# Create Order
+# Refund
 
 ```typescript title="Base URL"
-https://api.pointer.io.vn
+https://api.pointer.io.vn/
 ```
 
----
-
+# Refund
 ### Webhook Requirements
 
 1. The webhook endpoint must accept `POST` requests.
@@ -27,24 +26,13 @@ Pointer Wallet will send the following payload for `Payment` events:
 }
 ```
 # API
-```typescript title="Create Order"
-curl -X POST /api/payment/create-order
+
+```typescript title="Refund"
+curl -X POST /api/payment/refund
 -H 'Content-Type: application/json' \
 -H 'Authorization: Bearer ' + secret_key \
 -d {
-  amount: number;
-  currency: "VND" | "USD" | "ETH";
-  message: string;
-  userID: string;
-  orderID: string;
-  returnUrl: string;
-  orders?: [{
-    name: string;
-    image: string;
-    description: string;
-    quantity: number;
-    price: number;
-  }];
+    orderID:string
 }
 ```
 

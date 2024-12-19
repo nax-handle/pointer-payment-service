@@ -2,9 +2,9 @@
 sidebar_position: 6
 ---
 
-# Pay with one click
+# Quick Payment
 
-## Pay with one click
+## Quick Payment
 
 :::tip
 Required: Webhook event succeeded

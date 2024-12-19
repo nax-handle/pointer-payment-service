@@ -4,10 +4,10 @@ sidebar_position: 1
 
 # Introduction
 
-Pointer provides some API to use our services
+The Pointer Wallet API provides a seamless and secure way to integrate payment functionalities into your applications. This service is designed to enable developers to process transactions, manage wallets, and handle payments with ease while ensuring high security and performance standards.
 
 ```typescript title="Base URL"
-https://api-wallet.pointer.io.vn/
+https://api.pointer.io.vn/
 ```
 
 :::note

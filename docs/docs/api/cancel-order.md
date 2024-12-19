@@ -4,15 +4,12 @@ sidebar_position: 3
 
 # Cancel Order
 
-With this api you can create new order and get status after payment with webhook
-
 ```typescript title="Base URL"
-https://api-wallet.pointer.io.vn/
+https://api.pointer.io.vn
 ```
 
-
 ```typescript title="Cancel Order"
-curl -X POST api/v1/order/cancel/:id
+curl -X POST api/v1/order/cancel/:orderID
 -H 'Content-Type: application/json' \
 -H 'Authorization: Bearer ' + secret_key \
 ```
@@ -21,7 +18,6 @@ curl -X POST api/v1/order/cancel/:id
 
 ```typescript title="Response"
 {
-    "url":"https://pointer.io.vn/payment-gateway?token={token}"
     "status":200
 }
 ```
